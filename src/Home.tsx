@@ -39,6 +39,11 @@ export const Home = () => {
   const renderLots = ({item, index}: any) => {
     return (
       <TouchableOpacity
+        testID={
+          item.isCheck
+            ? `parking-drawing-registered-${index}`
+            : `parking-drawing-space-${index}`
+        }
         onPress={() => {
           setvisibleModal(true), generateBill(item), setSelectPark(item);
         }}
@@ -53,7 +58,11 @@ export const Home = () => {
           alignItems: 'center',
           height: 90,
         }}>
-        <Text style={{fontWeight: '900', color: 'white'}}>{item.id}</Text>
+        <Text
+          testID={`parking-drawing-space-number-${index}`}
+          style={{fontWeight: '900', color: 'white'}}>
+          {item.id}
+        </Text>
 
         {item.carRegNumber != '' && (
           <View>
@@ -139,14 +148,19 @@ export const Home = () => {
   return (
     <View style={{flex: 1, padding: '3%', paddingTop: '6%'}}>
       <TextInput
+        testID="parking-create-text-input"
         activeOutlineColor="cornflowerblue"
         value={noLots}
         placeholder="Enter the Number of Lots"
         mode="outlined"
-        onChangeText={/* istanbul ignore next */(text) => /* istanbul ignore next */setNoLots(text.replace(/[^0-9]/g, ''))}
+        onChangeText={
+          /* istanbul ignore next */ (text) =>
+            /* istanbul ignore next */ setNoLots(text.replace(/[^0-9]/g, ''))
+        }
       />
 
       <CustomButton
+        testID="parking-create-submit-button"
         isDisabled={noLots.length == 0}
         title={'Create the Lots for Parking'}
         onPress={
@@ -156,14 +170,19 @@ export const Home = () => {
       />
 
       <TextInput
+        testID="parking-drawing-registration-input"
         activeOutlineColor="cornflowerblue"
         value={carRegNumber}
         placeholder="Enter the Car Number"
         mode="outlined"
-        onChangeText={/* istanbul ignore next */(text) => /* istanbul ignore next */setcarRegNumber(text)}
+        onChangeText={
+          /* istanbul ignore next */ (text) =>
+            /* istanbul ignore next */ setcarRegNumber(text)
+        }
       />
 
       <CustomButton
+        testID="parking-drawing-add-car-button"
         isDisabled={carRegNumber.length == 0}
         title={'Submit'}
         onPress={
@@ -178,8 +197,11 @@ export const Home = () => {
         columnWrapperStyle={{justifyContent: 'center'}}
         renderItem={renderLots}
       />
-      
-      <Modal visible={visibleModal} transparent={true}>
+
+      <Modal
+        testID="deregister-car-registration"
+        visible={visibleModal}
+        transparent={true}>
         <View
           style={{
             alignItems: 'center',
@@ -192,10 +214,15 @@ export const Home = () => {
               Car Registration Number : {selectPark?.carRegNumber}
             </Text>
 
-            <Text style={{paddingTop: 9}}>
-              Total Time Parked : {/* istanbul ignore next */totalHours == 0 ? '1' : totalHours} hrs
+            <Text testID="deregister-time-spent" style={{paddingTop: 9}}>
+              Total Time Parked :{' '}
+              {/* istanbul ignore next */ totalHours == 0 ? '1' : totalHours}{' '}
+              hrs
             </Text>
 
+            <Text testID="deregister-charge" style={{paddingTop: 9}}>
+              Total Parking Charge: $ {totalAmount}
+            </Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -203,13 +230,16 @@ export const Home = () => {
                 marginTop: 9,
               }}>
               <CustomButton
+                testID="deregister-payment-button"
                 title={'Payment Taken'}
-                onPress= {/* istanbul ignore next */() =>
-                  /* istanbul ignore next */ paymentTaken()
+                onPress={
+                  /* istanbul ignore next */ () =>
+                    /* istanbul ignore next */ paymentTaken()
                 }
               />
 
               <CustomButton
+                testID="deregister-back-button"
                 title={'Cancel'}
                 onPress={
                   /* istanbul ignore next */ () =>
